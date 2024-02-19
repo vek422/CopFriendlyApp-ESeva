@@ -120,7 +120,7 @@ export default function RegisterScreen() {
         <View style={{ flexDirection: "row" }}>
           <Text>Dont Have an Account? </Text>
           <Link
-            href={"/login"}
+            href={"/(auth)/"}
             replace
             style={{
               color: COLORS.primary,

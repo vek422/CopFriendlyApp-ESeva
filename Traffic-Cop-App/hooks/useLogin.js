@@ -1,11 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { router } from "expo-router";
-// import { storage, USER, TOKEN } from "@/storage/index";
+import useLocalData from "@/hooks/useLocalData";
+import { TOKEN, USER } from "@/storage";
+import { useDispatch } from "react-redux";
+import { setLogin } from "@/redux/reducers/authReducer";
 const useLogin = () => {
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [token, setToken] = useLocalData(TOKEN);
   const handleLogin = async (email, password) => {
     setIsLoading(true);
     setError(null);
@@ -29,9 +35,9 @@ const useLogin = () => {
       if (res.status != 201) {
         setError(data.message);
       } else {
-        setData(data);
-        // storage.set(USER, JSON.stringify(data.user));
-        // storage.set(TOKEN, data.token);
+        // setData(data);
+        // setToken(data.token);
+        dispatch(setLogin({ user: data.user, token: data.token }));
         router.replace("/(tabs)/");
       }
     } catch (err) {

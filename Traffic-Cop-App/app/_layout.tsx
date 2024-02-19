@@ -8,9 +8,10 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
 import { useColorScheme } from "@/components/useColorScheme";
-
+import { store, persistor } from "@/redux/store";
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -29,7 +30,6 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
-
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -52,9 +52,13 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <Stack>
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+      </PersistGate>
+    </Provider>
   );
 }
