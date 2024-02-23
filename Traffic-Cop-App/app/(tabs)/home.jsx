@@ -1,13 +1,47 @@
-import { View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
+// import { SafeAreaView } from "react-native-safe-area-context";
 import useLocalData from "@/hooks/useLocalData";
 import { TOKEN } from "@/storage";
-export default function first() {
-  // const [token, setToken] = useLocalData(TOKEN);
-  // console.log(token);
+import { COLORS } from "@/constants/Colors";
+import { Link, router } from "expo-router";
+export default function home() {
   return (
-    <SafeAreaView>
-      <Text>First Page</Text>
+    <SafeAreaView style={{ alignItems: "center", gap: 10, marginTop: 50 }}>
+      <Link
+        href={"/register-violation"}
+        asChild
+        style={{
+          padding: 10,
+          backgroundColor: COLORS.secondary,
+          width: 250,
+        }}
+      >
+        <Text style={{ textAlign: "center", color: COLORS.white }}>
+          Register an Violation
+        </Text>
+      </Link>
+      <TouchableOpacity
+        style={{ padding: 10, backgroundColor: COLORS.secondary, width: 250 }}
+      >
+        <Text style={{ textAlign: "center", color: COLORS.white }}>
+          View Issued Tickets
+        </Text>
+      </TouchableOpacity>
+      {/* Section for recent Activities */}
+      <View
+        style={{
+          height: 1,
+          width: "80%",
+          backgroundColor: COLORS.gray2,
+          marginTop: 20,
+        }}
+      ></View>
     </SafeAreaView>
   );
 }

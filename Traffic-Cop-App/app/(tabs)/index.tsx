@@ -1,17 +1,12 @@
 import { setLogout } from "@/redux/reducers/authReducer";
 import { View, Text, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { UseSelector, useDispatch, useSelector } from "react-redux";
 
 export default () => {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  console.log(user);
   return (
-    <View>
+    <SafeAreaView>
       <Text>Hello</Text>
-      <Pressable onPress={() => dispatch(setLogout())}>
-        <Text>Logout</Text>
-      </Pressable>
-    </View>
+    </SafeAreaView>
   );
 };
