@@ -17,8 +17,12 @@ import { COLORS } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useState } from "react";
 import useRegister from "@/hooks/useRegister";
+import { useSelector } from "react-redux";
+import { Redirect } from "expo-router";
 export default function RegisterScreen() {
-  const { isLoading, error, handleRegister, data } = useRegister();
+  const user = useSelector((state) => state.auth.user);
+
+  const { isLoading, error, handleRegister } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
     setShowPassword((state) => !state);
@@ -28,6 +32,10 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  if (user) {
+    console.log("already Logged in redirecting");
+    return <Redirect href={"/(tabs)/"} />;
+  }
   return (
     <SafeAreaView
       style={{

@@ -19,6 +19,8 @@ export default {
 };
 
 const COLORS = {
+  primaryTint:"#6f6785",
+
   primary: "#312651",
   secondary: "#444262",
   tertiary: "#FF7754",

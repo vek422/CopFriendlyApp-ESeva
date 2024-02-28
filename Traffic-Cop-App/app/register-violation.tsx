@@ -10,24 +10,28 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Dropdown } from "react-native-element-dropdown";
 import { StyleSheet } from "react-native";
-import { useState } from "react";
-import Colors, { COLORS } from "@/constants/Colors";
+import { COLORS } from "@/constants/Colors";
 import { SIZES } from "@/constants/size";
+import useRegisterViolation from "@/hooks/useRegisterViolation.js";
 export default () => {
+  const { values, data, onChange, errors, handleSubmit } =
+    useRegisterViolation();
+  console.log(errors);
   const vehicleTypes = [
-    { label: "Car", value: "1" },
-    { label: "Bike", value: "2" },
-    { label: "Lorry", value: "3" },
+    { label: "Car", value: "Car" },
+    { label: "Bike", value: "Bike" },
+    { label: "Lorry", value: "Lorry" },
   ];
   const violationData = [
-    { label: "Speeding", value: "1" },
-    { label: "Running Red Light", value: "2" },
-    { label: "Reckless Driving", value: "3" },
-    { label: "Driving under the Influence", value: "4" },
-    { label: "No Seat Belt", value: "5" },
+    { label: "Speeding", value: "Speeding" },
+    { label: "Running Red Light", value: "Running_Red_Light" },
+    { label: "Reckless Driving", value: "Reckless_Driving" },
+    {
+      label: "Driving under the Influence",
+      value: "Driving_under_the_Influence",
+    },
+    { label: "No Seat Belt", value: "No_Seat_Belt" },
   ];
-  const [violation, setViolation] = useState("");
-  const [vehicleType, setVehicleType] = useState("");
   return (
     <>
       <Stack.Screen options={{ title: "Register Traffic Violation" }} />
@@ -37,7 +41,11 @@ export default () => {
             <Text style={styles.sectionHeading}>Violators Information</Text>
             <View style={{ padding: 20, gap: 10 }}>
               <Text>Violators Name</Text>
-              <TextInput style={styles.inputField} />
+              <TextInput
+                style={styles.inputField}
+                value={values.violatorsName}
+                onChangeText={(text) => onChange.setViolatorsName(text)}
+              />
               <Dropdown
                 style={styles.dropdown}
                 placeholderStyle={styles.placeholderStyle}
@@ -52,12 +60,16 @@ export default () => {
                 placeholder="Type Of Violation"
                 searchPlaceholder="Search..."
                 onChange={(item) => {
-                  setViolation(item.value);
+                  onChange.setTypeOfViolation(item.value);
                 }}
-                value={violation}
+                value={values.typeOfViolation}
               />
               <Text>Driving License</Text>
-              <TextInput style={styles.inputField} />
+              <TextInput
+                style={styles.inputField}
+                value={values.drivingLicense}
+                onChangeText={onChange.setDrivingLicense}
+              />
             </View>
 
             <Text style={styles.sectionHeading}>Vehicle Details</Text>
@@ -76,14 +88,22 @@ export default () => {
                 placeholder="Vehicle Type"
                 searchPlaceholder="Search..."
                 onChange={(item) => {
-                  setVehicleType(item.value);
+                  onChange.setVehicleType(item.value);
                 }}
-                value={vehicleType}
+                value={values.vehicleType}
               />
               <Text>Color</Text>
-              <TextInput style={styles.inputField} />
+              <TextInput
+                style={styles.inputField}
+                value={values.vehicleColor}
+                onChangeText={(text) => onChange.setVehicleColor(text)}
+              />
+              {errors && <Text style={styles.error}>Check All the Field</Text>}
               <View>
-                <TouchableOpacity style={styles.continueBtn}>
+                <TouchableOpacity
+                  style={styles.continueBtn}
+                  onPress={handleSubmit}
+                >
                   <Text>Continue</Text>
                 </TouchableOpacity>
               </View>
@@ -95,6 +115,9 @@ export default () => {
   );
 };
 const styles = StyleSheet.create({
+  error: {
+    color: "red",
+  },
   sectionHeading: {
     fontWeight: "700",
     fontSize: 20,
@@ -115,7 +138,12 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.gray2,
     borderBottomWidth: 0.5,
   },
-  inputField: { borderColor: COLORS.gray2, borderWidth: 1, padding: 10 },
+  inputField: {
+    borderColor: COLORS.gray2,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+  },
   icon: {
     marginRight: 5,
   },

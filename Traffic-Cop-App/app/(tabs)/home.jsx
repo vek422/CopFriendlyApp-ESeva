@@ -26,13 +26,15 @@ export default function home() {
           Register an Violation
         </Text>
       </Link>
-      <TouchableOpacity
+      <Link
+        href={"/ticket/ticket-list"}
+        asChild
         style={{ padding: 10, backgroundColor: COLORS.secondary, width: 250 }}
       >
         <Text style={{ textAlign: "center", color: COLORS.white }}>
           View Issued Tickets
         </Text>
-      </TouchableOpacity>
+      </Link>
       {/* Section for recent Activities */}
       <View
         style={{

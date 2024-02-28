@@ -14,16 +14,24 @@ import { SIZES } from "@/constants/size";
 import { COLORS } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "expo-router";
 import useLogin from "@/hooks/useLogin";
 export default function LoginScreen() {
-  const { isLoading, error, handleLogin, data } = useLogin();
+  const user = useSelector((state) => state.auth.user);
+
+  const { isLoading, error, handleLogin } = useLogin();
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => {
     setShowPassword((state) => !state);
   };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log(isLoading, error, data);
+
+  if (user) {
+    console.log("already Logged in redirecting");
+    return <Redirect href={"/(tabs)/"} />;
+  }
   return (
     <SafeAreaView
       style={{

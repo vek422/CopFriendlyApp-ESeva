@@ -1,21 +1,20 @@
 import { useState } from "react";
 import axios from "axios";
-import { router } from "expo-router";
+import { router, Redirect } from "expo-router";
 import useLocalData from "@/hooks/useLocalData";
 import { TOKEN, USER } from "@/storage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "@/redux/reducers/authReducer";
 const useLogin = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
-  const [token, setToken] = useLocalData(TOKEN);
+  // const [data, setData] = useState(null);
+  // const [token, setToken] = useLocalData(TOKEN);
   const handleLogin = async (email, password) => {
     setIsLoading(true);
     setError(null);
-    setData(null);
     try {
       const res = await fetch(
         process.env.EXPO_PUBLIC_BACKEND_BASE_URL + "/auth/login",
@@ -35,8 +34,6 @@ const useLogin = () => {
       if (res.status != 201) {
         setError(data.message);
       } else {
-        // setData(data);
-        // setToken(data.token);
         dispatch(setLogin({ user: data.user, token: data.token }));
         router.replace("/(tabs)/");
       }
@@ -48,7 +45,7 @@ const useLogin = () => {
     }
   };
 
-  return { isLoading, error, data, handleLogin };
+  return { isLoading, error, handleLogin };
 };
 
 export default useLogin;

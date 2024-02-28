@@ -1,14 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
+import { setLogin } from "@/redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
 const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
-  const [data, setData] = useState(null);
   const handleRegister = async ({ email, password, firstName, lastName }) => {
     setIsLoading(true);
     setError(null);
-    setData(null);
     try {
       const res = await fetch(
         process.env.EXPO_PUBLIC_BACKEND_BASE_URL + "/auth/register",
@@ -28,9 +29,10 @@ const useRegister = () => {
       );
       const data = await res.json();
       if (res.status != 201) {
+        console.log("has error in register");
         setError(data.message);
       } else {
-        setData(data);
+        dispatch(setLogin({ user: data.user, token: data.token }));
         router.replace("/(tabs)/");
       }
     } catch (err) {
@@ -41,7 +43,7 @@ const useRegister = () => {
     }
   };
 
-  return { isLoading, error, data, handleRegister };
+  return { isLoading, error, handleRegister };
 };
 
 export default useRegister;
